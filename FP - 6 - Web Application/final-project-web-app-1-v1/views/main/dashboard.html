@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   {{template "general/header"}}
+</head>
+<body>
+    <div class="flex flex-col w-screen h-screen overflow-auto text-gray-700 bg-gradient-to-tr from-blue-200 via-indigo-200 to-pink-200">
+        <div class="flex items-center flex-shrink-0 w-full h-16 px-10 bg-white bg-opacity-75">
+            <svg class="w-8 h-8 text-indigo-600 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+            <div class="flex items-center justify-center w-8 h-8 ml-auto">
+                <a href="/logout">
+                    <buton class="flex items-center justify-center w-8 h-8 ml-auto cursor-pointer font-bold">
+                        Logout
+                    </buton>
+                </a>
+            </div>
+        </div>
+        <div class="px-10 mt-6">
+            <h1 class="text-2xl font-bold">Kanban App</h1>
+        </div>
+
+        <section id="categories">
+            <div class="px-10 mt-6">
+                <div class="flex flex-grow flex-wrap space-x-6 overflow-auto">
+                    {{$lenCategories := len .categories}}
+                    {{if ne $lenCategories 0}}
+                        {{range $category := .categories}}
+                            <div class="flex flex-col w-72">
+                                {{$lenTasks := len .Tasks}}
+                                <div class="flex justify-between items-center py-2">
+                                    <div class="flex flex-wrap items-center space-x-2">
+                                        <h2 class="text-xl font-bold">{{.Type}}</h2>
+                                        <span class="flex items-center rounded-full justify-center w-5 h-5 text-sm font-semibold bg-gradient-to-tr text-white from-blue-300 via-indigo-300 to-pink-300">{{$lenTasks}}</span>
+                                    </div>
+                                    <div class="flex flex-wrap space-x-2">
+                                        <button class="flex items-center justify-center rounded-full hover:shadow w-5 text-indigo-600 hover:text-white hover:bg-gradient-to-tr hover:from-blue-300 hover:via-indigo-300 hover:to-pink-300">
+                                            <a href="/task/add?category={{ .ID }}">
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                </svg>
+                                            </a>
+                                        </button>
+                                        <button class="flex items-center justify-center rounded-full hover:shadow w-5 text-indigo-600 hover:text-white hover:bg-gradient-to-tr hover:from-pink-300 hover:via-indigo-300 hover:to-blue-300">
+                                            <a href="/category/delete?category_id={{ .ID }}">
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" transform ="rotate(45 12 12)" d="M12 6v6m0 0v6m0-6h6m-1 0H6"></path>
+                                                </svg>
+                                            </a>
+                                        </button>
+                                    </div>
+                                </div>
+                            {{if ne $lenTasks 0}}
+                                <div class="flex flex-col mt-6 space-y-6">
+                                    {{range $task := .Tasks}}
+                                        <div class="p-5 hover:bg-white bg-indigo-50 rounded-lg opacity-75">
+                                            <div class="space-y-4">
+                                                <div class="space-y-2">
+                                                    <span class="flex items-center rounded justify-center px-[25%] w-5 h-5 text-sm font-semibold bg-gradient-to-tr text-white from-blue-500 via-indigo-500 to-pink-500">{{.Title}}</span>
+                                                    <p class="text-md font-normal text-indigo-700">{{.Description}}</p>
+                                                </div>
+                                                <div class="flex justify-end items-center space-x-2">
+                                                    <button class="flex items-center justify-center rounded-lg px-4 shadow text-green-500 font-semibold bg-green-100 hover:text-white hover:bg-green-500"><a href="/task/update?task_id={{ $task.ID }}">Update</a></button>
+                                                    <button class="flex items-center justify-center rounded-lg px-4 shadow text-red-500 font-semibold bg-red-100 hover:text-white hover:bg-red-500"><a href="/task/delete?task_id={{ $task.ID }}">Delete</a></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {{end}}
+                                </div>
+                            {{end}}
+                            </div>
+                        {{end}}
+                        <div class="flex flex-col w-72">
+                            <div>
+                                <button class="flex items-center py-2 px-5 justify-center rounded-lg shadow text-indigo-500 font-bold bg-gradient-to-tr hover:text-white from-blue-300 via-indigo-300 to-pink-300 hover:from-blue-500 hover:via-indigo-500 hover:to-pink-500"><a href="/category/add">Add Category</a></button>
+                            </div>
+                        </div>
+                    {{else}}
+                    <p>Category is empty!</p>
+                    <button><a href="/category/add"></a>Tambah Category</button>
+                    {{end}}
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+    <script src="/assets/js/dashboard.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body class="bg-gradient-to-r from-cyan-500 to-blue-500">
+    <header>
+        <nav class="px-2 py-2 shadow-lg">
+            <div class="flex flex-wrap justify-between">
+                <div class="flex items-center">
+                    <a href="/user/img/profile">
+                        <img src="/assets/images/img-avatar.png" class="mr-2 shadow rounded-full h-10 w-10 align-middle border-none"/>
+                    </a>
+                    <span class="self-center font-bold text-white">Hello {{.Cart.Name}}</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="form-update-image hidden">
+                        <form method="post" action="/user/img/update-profile" enctype="multipart/form-data" class="flex">
+                            <div class="mx-2">
+                                <input class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none
+                            dark:bg-gray-700 dark:border-gray-600
+                            dark:placeholder-gray-400 p-1" id="file_input" type="file" name="file-avatar" required>
+                            </div>
+                            <div class="mx-2">
+                                <button type="submit" class="shadow rounded-lg bg-amber-500 hover:bg-amber-300 text-white font-bold p-2">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="btn-update-image mx-2">
+                        <button class="btn-update shadow rounded-lg bg-emerald-500 hover:bg-emerald-300 text-white font-bold p-2">
+                            Update Image
+                        </button>
+                    </div>
+                    <div class="mx-2">
+                        <form method="get" action="/user/logout">
+                            <button type="submit" class="shadow rounded-lg bg-red-500 hover:bg-red-300 text-white font-bold p-2">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="title">
+        <div class="lg:mx-52 mx-20 pt-20">
+            <h1 class="text-4xl font-bold mb-2 text-white">Dashboard Page</h1>
+        </div>
+    </section>
+
+    <section id="list-product">
+        <div class="lg:mx-52 mx-20 py-5">
+            <div class="border items-center border shadow-md rounded-lg bg-white">
+                <div class="m-20">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-2">List Product</h2>
+                    </div>
+                    {{ $lenProduct := len .Product }}
+                    {{ if ne $lenProduct 0 }}
+                    <div class="overflow-x-auto relative">
+                        <form method="post" action="/cart/add">
+                            <table class=" w-full text-sm text-left">
+                                <thead class="text-xs text-blue-600 bg-blue-50">
+                                <tr>
+                                    <th scope="col" class="py-3 px-6">Checked</th>
+                                    <th scope="col" class="py-3 px-6">ID</th>
+                                    <th scope="col" class="py-3 px-6">Name</th>
+                                    <th scope="col" class="py-3 px-6">Price</th>
+                                    <th scope="col" class="py-3 px-6">Qty</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{range $val := .Product}}
+                                <tr>
+                                    <td class="py-4 px-6">
+                                        <input type="checkbox" id="check-{{ .Id }}" name="product"
+                                               onclick="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')">
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        {{.Id}}
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        {{.Name}}
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        Rp. {{.Price}}
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <input type="number" style="display:none" id="qty-{{ .Id }}" value="1" min="1" max="100"
+                                               onchange="displayQty('{{ .Id }},{{ .Name }},{{ .Price }}', 'check-{{ .Id }}', 'qty-{{ .Id }}')">
+                                    </td>
+                                </tr>
+                                {{end}}
+                                </tbody>
+                            </table>
+                            <div class="flex justify-center mt-5">
+                                <button type="submit" class="shadow rounded-lg bg-blue-900 hover:bg-blue-500 text-white font-bold p-2">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    {{ else }}
+                    <div>
+                        <p class="text-base">
+                            Product is Empty
+                        </p>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="my-cart">
+        <div class="lg:mx-52 mx-20 pb-20">
+            <div class="border items-center border shadow-md rounded-lg bg-white">
+                <div class="m-20">
+                    <div>
+                        <h2 class="text-2xl font-semibold mb-2">My Cart</h2>
+                    </div>
+                    {{ $lenCart := len .Cart.Cart }}
+                    {{ if ne $lenCart 0 }}
+                    <div class="overflow-x-auto relative">
+                        <table class=" w-full text-sm text-left">
+                            <thead class="text-xs text-blue-600 bg-blue-50">
+                            <tr>
+                                <th scope="col" class="py-3 px-6">ID</th>
+                                <th scope="col" class="py-3 px-6">Name</th>
+                                <th scope="col" class="py-3 px-6">Price</th>
+                                <th scope="col" class="py-3 px-6">Quantity</th>
+                                <th scope="col" class="py-3 px-6">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{range $val := .Cart.Cart}}
+                            <tr>
+                                <td class="py-4 px-6">
+                                    {{.Id}}
+                                </td>
+                                <td class="py-4 px-6">
+                                    {{.Name}}
+                                </td>
+                                <td class="py-4 px-6">
+                                    Rp. {{.Price}}
+                                </td>
+                                <td class="py-4 px-6">
+                                    {{.Quantity}}
+                                </td>
+                                <td class="py-4 px-6">
+                                   Rp. {{.Total}}
+                                </td>
+                            </tr>
+                            {{end}}
+                            </tbody>
+                        </table>
+                    </div>
+                    {{ else }}
+                    <div>
+                        <p class="text-base">
+                            Cart is Empty
+                        </p>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

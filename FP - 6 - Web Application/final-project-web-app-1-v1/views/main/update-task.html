@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{template "general/header"}}
+</head>
+<body class="bg-gradient-to-r from-cyan-500 to-blue-500">
+<div class="flex flex-col w-screen h-screen overflow-auto text-gray-700 bg-gradient-to-tr from-blue-200 via-indigo-200 to-pink-200">
+    <div class="flex items-center flex-shrink-0 w-full h-16 px-10 bg-white bg-opacity-75">
+        <svg class="w-8 h-8 text-indigo-600 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+        </svg>
+        <div class="flex items-center justify-center w-8 h-8 ml-auto">
+            <a href="/logout">
+                <buton class="flex items-center justify-center w-8 h-8 ml-auto cursor-pointer font-bold">
+                    Logout
+                </buton>
+            </a>
+        </div>
+    </div>
+    <section id="add-task">
+        <div class="mx-20 lg:mx-72 xl:mx-80 2xl:mx-96 py-36">
+            <div class="border items-center border shadow-md rounded-lg bg-white">
+                <div class="mx-20 my-20">
+                    <div>
+                        <h1 class="text-4xl text-indigo-500 text-left font-bold mb-2">Update new task</h1>
+                        <form action="/task/update/process?task_id={{.task.ID}}&category_id={{.task.CategoryID}}" method="post" class="pr-2">
+                            <div class="my-3">
+                                <label for="title" class="text-left text-indigo-700 block font-semibold my-1">Title</label>
+                                <input type="text" id="title" name="title" placeholder="Title" value="{{.task.Title}}" class="text-indigo-300 text-left form-control w-full border shadow-md h-10 rounded-lg my-1 px-2" required />
+                            </div>
+                            <div class="my-3">
+                                <label for="description" class="text-left text-indigo-700 block font-semibold my-1">Description</label>
+                                <input type="text" id="description" name="description" value="{{.task.Description}}" placeholder="Description" class="text-indigo-300 text-left form-control w-full border shadow-md h-10 rounded-lg my-1 px-2" required />
+                            </div>
+                            <div class="my-3 flex justify-end space-x-6">
+                                <button type="submit" class="flex items-center w-32 py-2 px-2 justify-center rounded-lg shadow text-indigo-500 font-bold bg-gradient-to-tr hover:text-white
+                                    from-blue-300 via-indigo-300 to-pink-300 hover:from-blue-500 hover:via-indigo-500 hover:to-pink-500">Update Task</button>
+                                <button class="flex items-center w-20 py-2 px-2 justify-center rounded-lg bg-red-300 hover:bg-red-500 text-white font-bold"><a href="/dashboard">Cancel</a></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
